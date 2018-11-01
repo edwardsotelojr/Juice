@@ -1,0 +1,40 @@
+<% provide(:title, "Sign up") %>
+<center><h1> Sign Up </h1></center>
+
+<div class="row">
+  <div class="col-3">
+  </div>
+  <div class="col-md-6">
+    <%= form_for(@user) do |f| %>
+    <%= render 'shared/error_messages', object: f.object %>
+
+      <%= f.label :name %>
+      <%= f.text_field :name, class: 'form-control' %>
+
+      <%= f.label :email %>
+      <%= f.text_field :email, class: 'form-control' %>
+
+      <%= f.label :password %>
+      <%= f.password_field :password, class: 'form-control' %>
+
+      <%= f.label :password_confirmation, "Confirmation" %>
+      <%= f.password_field :password_confirmation , class: 'form-control'%>
+
+      <%= f.label :zipcode %>
+      <%= f.select :zipcode, ['77003','77004','77005','77006','77007','77008','77009','77011','77016','77018','77019','77020','77023','77024','77026','77027',
+      '77028','77029','77030','77037','77046','77055','77056','77076',
+      '77091','77092','77093','77098'], class: 'form-control' %>
+</br>
+      <%= f.label :address %>
+      <%= f.text_field :address, class: 'form-control' %>
+
+      <%= f.label :phone %>
+      <%= f.text_field :phone, :maxlength => 10, class: 'form-control' %>
+
+      <%= f.submit "Create my account", class: "btn btn-primary" %>
+      <% end %>
+
+    </div>
+    <div class="col-2">
+    </div>
+  </div>
