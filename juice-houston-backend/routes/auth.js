@@ -5,7 +5,10 @@ const bcrypt = require('bcrypt');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 const keys = require('../keys');
+const UserController = require('../controllers/user');
+
 router.get('/order', getIndex);
+
 router.post('/signup', (req, res) => {
 
   User.findOne({email: req.body.email})
@@ -34,7 +37,6 @@ router.post('/signup', (req, res) => {
 router.post('/signin', (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
-    console.log(req.body);
     User.findOne({email})
     .then(user => {
       if(!user){
@@ -44,9 +46,7 @@ router.post('/signin', (req, res) => {
        .then(isMatch => {
          if(isMatch){
            const payload = {
-             id: user.id,
-             name: user.name,
-             address: user.address
+             user
            };
            jwt.sign(
              payload,
@@ -69,4 +69,34 @@ router.post('/signin', (req, res) => {
        });
      });
  });
+
+router.patch('/edit/:_id', (req, res) =>{
+  console.log(req.params._id)
+  User.findOneAndUpdate({_id: req.params._id}, {"$set":{"address": req.body.address,
+        "zipcode": req.body.zipcode,
+      "phone": req.body.phone}},{ returnNewDocument: true })
+        .then(updatedDocument => {
+        if(updatedDocument) {
+          console.log(`Successfully updated document: ${updatedDocument}.`)
+        } else {
+          console.log("No document matches the provided query.")
+        }
+        return updatedDocument
+      })
+      .catch(err => console.error(`Failed to find and update document: ${err}`))
+} )
+
+
+router.get('/:email', (req, res) =>{
+  console.log(req.body.email)
+  User.findOne({email: req.body.email}, function(err, data){
+    if(err){
+       return res.status(500);
+    } else {
+       return res.status(200).send({user: JSON.stringify(data)})
+    }
+   });
+} )
+//UserController.editUser);
+
 module.exports = router;

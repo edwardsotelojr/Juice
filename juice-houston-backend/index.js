@@ -24,6 +24,7 @@ mongoose.connect(key.MONGO_URI, {
   useNewUrlParser: true,
   useCreateIndex: true,
   useUnifiedTopology: true,
+  useFindAndModify: false
 }).then(() => {
   console.log("Mongoose Connected. ");
 })

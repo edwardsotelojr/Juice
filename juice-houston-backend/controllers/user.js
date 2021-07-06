@@ -1,6 +1,7 @@
 const { JWT_SECRET } = require('../keys.js');
 const UserServices = require('../services/user.js');
 const emailRegexp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+const User = require("../models/user");
 
 const signup = async (req, res) => {
   console.log(req)
@@ -16,6 +17,21 @@ const signup = async (req, res) => {
         next(new Error(error.message));
       }    
 };
+
+const editUser = (req, res) => {
+  console.log(req.params)
+  User.findByIdAndUpdate(req.params._id, {
+    $set: req.body
+  }, (error, data) => {
+    if (error) {
+      return next(error);
+      console.log(error)
+    } else {
+      res.json(data)
+      console.log('User updated successfully !')
+    }
+  })
+}
 
  const signin = (req, res) => {
 
@@ -55,3 +71,5 @@ const signup = async (req, res) => {
       });
     });
 };
+
+module.exports = {editUser}
